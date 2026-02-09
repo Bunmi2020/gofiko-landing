@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>goFIKO | Powered by AI, Guided by Educators</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #0f172a;
+            overflow-x: hidden;
+        }
+
+        .gradient-bg {
+            background: radial-gradient(circle at top right, #4f46e5, transparent),
+                        radial-gradient(circle at bottom left, #7c3aed, transparent);
+            background-color: #0f172a;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .fade-in {
+            animation: fadeIn 1.2s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .glow-button {
+            transition: all 0.3s ease;
+            box-shadow: 0 0 0 rgba(79, 70, 229, 0);
+        }
+
+        .glow-button:hover:not(:disabled) {
+            box-shadow: 0 0 20px rgba(79, 70, 229, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .glow-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .logo-gradient {
+            stop-color: #818cf8;
+        }
+        .logo-gradient-alt {
+            stop-color: #c084fc;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen flex flex-col items-center justify-center p-6 text-white">
+
+    <!-- Decorative Elements -->
+    <div class="fixed top-20 left-20 w-64 h-64 bg-indigo-600/20 rounded-full blur-[100px] animate-pulse"></div>
+    <div class="fixed bottom-20 right-20 w-80 h-80 bg-purple-600/20 rounded-full blur-[100px] animate-pulse"></div>
+
+    <main class="relative z-10 w-full max-w-4xl flex flex-col items-center text-center fade-in">
+        
+        <!-- Logo Area -->
+        <div class="mb-8 flex flex-col items-center animate-float">
+            <svg class="w-20 h-20 mb-4" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" class="logo-gradient" />
+                        <stop offset="100%" class="logo-gradient-alt" />
+                    </linearGradient>
+                </defs>
+                <path d="M50 25L85 38L50 51L15 38L50 25Z" stroke="url(#logoGrad)" stroke-width="3.5" stroke-linejoin="round"/>
+                <path d="M30 44V52C30 52 38 58 50 58C62 58 70 52 70 52V44" stroke="url(#logoGrad)" stroke-width="3.5" stroke-linecap="round"/>
+                <path d="M15 38V55" stroke="#22d3ee" stroke-width="3.5" stroke-linecap="round"/>
+                <circle cx="15" cy="58" r="3" fill="#22d3ee" />
+                <path d="M30 62C30 55 35 50 50 50C65 50 70 55 70 62C70 78 62 88 50 88C38 88 30 78 30 62Z" stroke="white" stroke-width="3.5"/>
+                <circle cx="41" cy="65" r="6" stroke="white" stroke-width="2"/>
+                <circle cx="41" cy="65" r="2.5" fill="white"/>
+                <circle cx="59" cy="65" r="6" stroke="white" stroke-width="2"/>
+                <circle cx="59" cy="65" r="2.5" fill="white"/>
+                <path d="M50 72L47 77L50 80L53 77L50 72Z" fill="white"/>
+            </svg>
+
+            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">
+                goFIKO
+            </h1>
+            <p class="mt-2 text-indigo-300 font-medium tracking-wide text-sm md:text-base opacity-90">
+                Powered by AI, guided by Educators
+            </p>
+        </div>
+
+        <!-- Main Content Card -->
+        <div class="glass p-8 md:p-12 rounded-3xl w-full mb-12 shadow-2xl">
+            <span class="inline-block px-4 py-1.5 mb-6 text-xs font-semibold tracking-widest text-indigo-300 uppercase bg-indigo-500/10 border border-indigo-500/20 rounded-full">
+                The Future of Learning
+            </span>
+            
+            <h2 class="text-3xl md:text-5xl font-bold mb-6 leading-tight">
+                Personalized education <br class="hidden md:block"> 
+                <span class="text-indigo-400">reimagined for everyone.</span>
+            </h2>
+            
+            <p class="text-gray-400 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+                We're blending cutting-edge artificial intelligence with human pedagogical expertise. Join our waitlist to get early access to the platform.
+            </p>
+
+            <!-- Newsletter Form -->
+            <form id="waitlistForm" class="flex flex-col md:flex-row gap-4 max-w-md mx-auto">
+                <input 
+                    type="email" 
+                    id="emailInput"
+                    placeholder="Enter your email address" 
+                    required
+                    class="flex-1 px-6 py-4 bg-white/5 border border-white/10 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all text-white placeholder:text-gray-500"
+                >
+                <button 
+                    type="submit" 
+                    id="submitBtn"
+                    class="glow-button px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-2xl transition-all whitespace-nowrap"
+                >
+                    Notify Me
+                </button>
+            </form>
+            
+            <!-- Message Box -->
+            <div id="messageBox" class="hidden mt-6 p-4 rounded-xl text-sm transition-all"></div>
+        </div>
+
+        <!-- Social & Contact Footer -->
+        <div class="flex flex-col items-center gap-8">
+            <div class="flex items-center gap-6">
+                <a href="#" class="group transition-all hover:scale-110" aria-label="Twitter">
+                    <svg class="w-6 h-6 text-gray-400 group-hover:text-indigo-400 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+                <a href="#" class="group transition-all hover:scale-110" aria-label="Instagram">
+                    <svg class="w-6 h-6 text-gray-400 group-hover:text-pink-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                <a href="#" class="group transition-all hover:scale-110" aria-label="LinkedIn">
+                    <svg class="w-6 h-6 text-gray-400 group-hover:text-blue-400" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                </a>
+            </div>
+
+            <div class="flex flex-col items-center gap-2">
+                <p class="text-xs text-gray-500 uppercase tracking-[0.3em]">Direct Contact</p>
+                <a href="mailto:hello@gofiko.com" class="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors">
+                    hello@gofiko.com
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-16 text-gray-600 text-xs text-center">
+        &copy; 2024 goFIKO. Built for the future of learning.<br>
+        <span class="opacity-50 mt-1 block">All rights reserved.</span>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Handle configuration with fallbacks for standalone deployment
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'gofiko-waitlist';
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const form = document.getElementById('waitlistForm');
+        const emailInput = document.getElementById('emailInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const messageBox = document.getElementById('messageBox');
+
+        const showMessage = (msg, type) => {
+            messageBox.textContent = msg;
+            messageBox.classList.remove('hidden', 'bg-green-500/10', 'border-green-500/20', 'text-green-400', 'bg-red-500/10', 'border-red-500/20', 'text-red-400');
+            if (type === 'success') {
+                messageBox.classList.add('bg-green-500/10', 'border', 'border-green-500/20', 'text-green-400');
+            } else {
+                messageBox.classList.add('bg-red-500/10', 'border', 'border-red-500/20', 'text-red-400');
+            }
+        };
+
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.warn("Auth initialization silent warning.");
+            }
+        };
+
+        initAuth();
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = emailInput.value.trim();
+            if (!email) return;
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Joining...";
+            emailInput.disabled = true;
+
+            try {
+                // Ensure auth is ready
+                if (!auth.currentUser) await initAuth();
+
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'waitlist'), {
+                    email: email,
+                    timestamp: serverTimestamp(),
+                    userAgent: navigator.userAgent
+                });
+
+                showMessage("Success! You've been added to the waitlist.", "success");
+                form.style.display = 'none';
+            } catch (error) {
+                console.error("Submission Error: ", error);
+                showMessage("Service currently unavailable. Please try again later.", "error");
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Notify Me";
+                emailInput.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
