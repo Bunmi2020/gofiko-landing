@@ -30,9 +30,10 @@
         }
 
         .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(15, 23, 42, 0.6); /* Darker background color */
+            backdrop-filter: blur(20px); /* Increased blur for better contrast */
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
         .animate-float {
@@ -215,7 +216,7 @@
     </main>
 
     <footer class="mt-16 text-gray-600 text-xs text-center">
-        &copy; 2024 goFIKO. Built for the future of learning.<br>
+        &copy; 2025 goFIKO. Built for the future of learning.<br>
         <span class="opacity-50 mt-1 block">All rights reserved.</span>
     </footer>
 
@@ -293,11 +294,11 @@
         });
 
         // ADMIN FEATURE: SECRET KEYBOARD SHORTCUT
-        // Type "gofiko_wait" on your keyboard while on the page to see collected emails
+        // Type "gfwait" on your keyboard while on the page to see collected emails
         let inputBuffer = "";
         window.addEventListener('keydown', async (e) => {
             inputBuffer += e.key.toLowerCase();
-            if (inputBuffer.endsWith("gofiko_wait")) {
+            if (inputBuffer.endsWith("gfwait")) {
                 inputBuffer = "";
                 document.getElementById('adminPanel').style.display = 'block';
                 const body = document.getElementById('adminTableBody');
@@ -325,4 +326,3 @@
     </script>
 </body>
 </html>
-
