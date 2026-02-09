@@ -23,7 +23,6 @@
 
         .glass {
             background: rgba(255, 255, 255, 0.03);
-            -webkit-backdrop-filter: blur(12px);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -67,9 +66,43 @@
         .logo-gradient-alt {
             stop-color: #c084fc;
         }
+
+        /* Admin Table Styles */
+        #adminPanel {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.95);
+            z-index: 100;
+            display: none;
+            padding: 2rem;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body class="gradient-bg min-h-screen flex flex-col items-center justify-center p-6 text-white">
+
+    <!-- Admin Panel (Hidden by default) -->
+    <div id="adminPanel">
+        <div class="max-w-4xl mx-auto">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold">Waitlist Dashboard</h2>
+                <button onclick="document.getElementById('adminPanel').style.display='none'" class="text-gray-400 hover:text-white">Close [Esc]</button>
+            </div>
+            <div class="glass rounded-2xl overflow-hidden">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="border-b border-white/10 bg-white/5">
+                            <th class="p-4">Email</th>
+                            <th class="p-4">Date Joined</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminTableBody">
+                        <!-- Data injected here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
     <!-- Decorative Elements -->
     <div class="fixed top-20 left-20 w-64 h-64 bg-indigo-600/20 rounded-full blur-[100px] animate-pulse"></div>
@@ -174,14 +207,29 @@
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Handle configuration with fallbacks for standalone deployment
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        /**
+         * MANUAL SETUP FOR GOFIKO.COM:
+         * 1. Go to console.firebase.google.com
+         * 2. Project Settings > General > Your Apps > Web App
+         * 3. Copy the 'firebaseConfig' object and paste it below.
+         */
+        const manualFirebaseConfig = {
+            apiKey: "AIzaSyBBoGEyawnz8QuGZov8wJK6WS1Y-FnSuqA",
+            authDomain: "ssc-users-dc365.firebaseapp.com",
+            projectId: "ssc-users-dc365",
+            storageBucket: "ssc-users-dc365.firebasestorage.app",
+            messagingSenderId: "880046117770",
+            appId: "1:880046117770:web:3fa8c69e184b885b0e6e73"
+        };
+
+        // Fallback logic
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : manualFirebaseConfig;
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'gofiko-waitlist';
         
-        // Initialize Firebase
+        // Initialize
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
@@ -201,20 +249,10 @@
             }
         };
 
-        const initAuth = async () => {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (err) {
-                console.warn("Auth initialization silent warning.");
-            }
-        };
+        // Auth
+        signInAnonymously(auth).catch(() => console.log("Offline mode or Auth issue"));
 
-        initAuth();
-
+        // Form Submit
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = emailInput.value.trim();
@@ -222,27 +260,52 @@
 
             submitBtn.disabled = true;
             submitBtn.textContent = "Joining...";
-            emailInput.disabled = true;
 
             try {
-                // Ensure auth is ready
-                if (!auth.currentUser) await initAuth();
-
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'waitlist'), {
                     email: email,
                     timestamp: serverTimestamp(),
                     userAgent: navigator.userAgent
                 });
-
                 showMessage("Success! You've been added to the waitlist.", "success");
                 form.style.display = 'none';
             } catch (error) {
-                console.error("Submission Error: ", error);
-                showMessage("Service currently unavailable. Please try again later.", "error");
+                console.error(error);
+                showMessage("Check your manualFirebaseConfig in index.html!", "error");
                 submitBtn.disabled = false;
                 submitBtn.textContent = "Notify Me";
-                emailInput.disabled = false;
             }
+        });
+
+        // ADMIN FEATURE: SECRET KEYBOARD SHORTCUT
+        // Type "admin" on your keyboard while on the page to see collected emails
+        let inputBuffer = "";
+        window.addEventListener('keydown', async (e) => {
+            inputBuffer += e.key.toLowerCase();
+            if (inputBuffer.endsWith("admin")) {
+                inputBuffer = "";
+                document.getElementById('adminPanel').style.display = 'block';
+                const body = document.getElementById('adminTableBody');
+                body.innerHTML = '<tr><td colspan="2" class="p-4 text-center">Loading list...</td></tr>';
+                
+                try {
+                    const snap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'waitlist'));
+                    body.innerHTML = "";
+                    snap.forEach(doc => {
+                        const data = doc.data();
+                        const row = `
+                            <tr class="border-b border-white/5">
+                                <td class="p-4">${data.email}</td>
+                                <td class="p-4 text-gray-400 text-sm">${data.timestamp?.toDate().toLocaleString() || 'Pending'}</td>
+                            </tr>
+                        `;
+                        body.insertAdjacentHTML('beforeend', row);
+                    });
+                } catch (err) {
+                    body.innerHTML = '<tr><td colspan="2" class="p-4 text-red-400">Failed to load. Check Firebase permissions.</td></tr>';
+                }
+            }
+            if (e.key === "Escape") document.getElementById('adminPanel').style.display = 'none';
         });
     </script>
 </body>
